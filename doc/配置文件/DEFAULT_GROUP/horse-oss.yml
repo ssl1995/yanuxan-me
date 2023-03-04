@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${my_ip}:3306/oss?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+
+oss:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  accessKey: 阿里云oss key
+  accessKeySecret: 阿里云oss key secret
+  bucket: bucket名称
+  expire: 10000000

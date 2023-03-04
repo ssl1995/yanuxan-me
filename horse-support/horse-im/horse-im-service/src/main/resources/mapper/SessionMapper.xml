@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msb.im.mapper.SessionMapper">
+    <select id="findMySession" resultType="com.msb.im.model.bo.SessionUserBO">
+        select b.session_id, a.type, b.update_time_stamp from session a inner join session_user b on a.id = b.session_id
+        and
+        b.user_id = #{userId} and a.sys_id = #{sysId} and a.is_deleted = 0 and b.is_deleted = 0 order by
+        a.update_time_stamp
+        <if test="size != null">
+            limit #{size}
+        </if>
+    </select>
+
+    <select id="findUserSessionId" resultType="java.lang.Long">
+        select b.session_id from session a inner join session_user b on a.id = b.session_id and
+        b.user_id = #{userId} and a.sys_id = #{sysId} and a.is_deleted = 0 and b.is_deleted = 0 order by
+        a.update_time_stamp
+        <if test="size != null">
+            limit #{size}
+        </if>
+    </select>
+
+    <select id="findUserAllSessionId" resultType="java.lang.Long">
+        select b.session_id
+        from session a
+                 inner join session_user b on a.id = b.session_id and
+                                              b.user_id = #{userId} and a.sys_id = #{sysId}
+    </select>
+
+    <select id="findUserAllStoreSessionId" resultType="java.lang.Long">
+        select b.session_id
+        from session a
+                 inner join session_user b on a.id = b.session_id and a.type = 3 and
+                                              b.user_id = #{userId} and a.sys_id = #{sysId}
+    </select>
+
+    <select id="findUnreadSession" resultType="com.msb.im.model.entity.Session">
+        select a.* from session a inner join session_user b on a.id = b.session_id and b.user_id = #{storeId} and
+        b.un_read_count > 0
+        and a.id in
+        <foreach collection="sessionIds" item="sessionId" open="(" close=")" separator=",">
+            #{sessionId}
+        </foreach>
+        order by b.update_time_stamp desc
+    </select>
+
+    <select id="findWithinTimes" resultType="com.msb.im.model.entity.Session">
+        select a.* from session a inner join session_user b on a.id = b.session_id and b.user_id = #{storeId} and
+        from_unixtime(a.update_time_stamp/1000) > NOW()-INTERVAL #{withinTimeHours} HOUR
+        and a.type = 3
+        and a.id in
+        <foreach collection="sessionIds" item="sessionId" open="(" close=")" separator=",">
+            #{sessionId}
+        </foreach>
+        order by b.update_time_stamp desc
+        limit #{sessionWithinTimeSize}
+    </select>
+
+    <select id="findBySessionIdsAndUserId" resultType="com.msb.im.model.entity.Session">
+        select a.* from session a inner join session_user b on a.id = b.session_id and b.user_id = #{userId}
+        and a.id in
+        <foreach collection="sessionIds" item="sessionId" open="(" close=")" separator=",">
+            #{sessionId}
+        </foreach>
+        order by b.update_time_stamp desc
+    </select>
+
+    <select id="findStoreUserSessionId" resultType="java.lang.Long">
+        SELECT
+            s.id
+        FROM session_user su
+                 INNER JOIN `session` s ON su.session_id = s.id
+            AND s.sys_id = #{sysId}
+            AND s.type = 3
+            AND s.is_deleted = 0
+            AND su.user_id = #{storeId}
+            AND su.relation_user_id = #{userId}
+    </select>
+
+    <select id="findSingleSession" resultType="com.msb.im.model.entity.Session">
+        SELECT
+        s.*
+        FROM session_user su
+        INNER JOIN `session` s ON su.session_id = s.id
+        AND s.sys_id = #{sysId}
+        AND s.type = 1
+        AND s.is_deleted = 0
+        AND su.user_id = #{fromId}
+        AND su.relation_user_id = #{toId}
+    </select>
+
+    <select id="findDbSessionId" resultType="java.lang.Long">
+        SELECT DISTINCT
+            s.id
+        FROM
+            session_user su
+                INNER JOIN `session` s ON su.session_id = s.id
+                AND s.sys_id = #{sysId}
+                AND su.user_id = #{fromId}
+                AND su.relation_user_id = #{toId}
+                AND s.type = #{sessionTypeEnum}
+                AND s.payload = #{sessionPayload}
+
+    </select>
+</mapper>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msb.im.module.waiter.mapper.UserWaiterRelationMapper">
+    <select id="findSessionId" resultType="java.lang.Long">
+        select session_id from user_waiter where store_id = #{storeId} and user_id = #{userId}
+    </select>
+</mapper>

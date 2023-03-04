@@ -1,0 +1,70 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          lower-case-service-id: true
+      routes:
+        # mallIm服务
+        - id: mall-im-service
+          uri: lb://mall-im-service
+          predicates:
+            - Path=/mall/im/**
+        # im中台服务
+        - id: horse-im-service
+          uri: lb://horse-im-service
+          predicates:
+            - Path=/im/**
+        # 用户中心服务
+        - id: horse-user-service
+          uri: lb://horse-user-service
+          predicates:
+            - Path=/uc/**
+        # 搜索中台服务
+        - id: horse-search-service
+          uri: lb://horse-search-service
+          predicates:
+            - Path=/search/**
+        # OSS文件服务
+        - id: horse-oss
+          uri: lb://horse-oss
+          predicates:
+            - Path=/oss/**
+        # 支付中台服务
+        - id: horse-pay-service
+          uri: lb://horse-pay-service
+          predicates:
+            - Path=/payCenter/**
+        # 基础模块服务
+        - id: mall-base-service
+          uri: lb://mall-base-service
+          predicates:
+            - Path=/mall/base/**
+        # 商品模块服务
+        - id: mall-product-service
+          uri: lb://mall-product-service
+          predicates:
+            - Path=/mall/product/**
+        # 交易中心服务
+        - id: mall-trade-service
+          uri: lb://mall-trade-service
+          predicates:
+            - Path=/mall/trade/**
+        # 营销中心服务
+        - id: mall-marketing-service
+          uri: lb://mall-marketing-service
+          predicates:
+            - Path=/mall/marketing/**
+        # 评价服务
+        - id: mall-comment-service
+          uri: lb://mall-comment-service
+          predicates:
+            - Path=/mall/comment/**
+        # 敏感词服务
+        - id: horse-sensitive-service
+          uri: lb://horse-sensitive-service
+          predicates:
+            - Path=/horse/sensitive/**

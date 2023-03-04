@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>horse-framework</artifactId>
+        <groupId>com.msb.cloud</groupId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <artifactId>horse-framework-starters</artifactId>
+
+    <modules>
+        <module>horse-framework-starter-dubbo</module>
+        <module>horse-framework-starter-feign</module>
+        <module>horse-framework-starter-job</module>
+        <module>horse-framework-starter-mysql</module>
+        <module>horse-framework-starter-nacos</module>
+        <module>horse-framework-starter-redis</module>
+        <module>horse-framework-starter-rocketmq</module>
+        <module>horse-framework-starter-seata</module>
+        <module>horse-framework-starter-web</module>
+        <module>horse-framework-starter-web-safety</module>
+        <module>horse-framework-starter-web-tools</module>
+    </modules>
+
+</project>

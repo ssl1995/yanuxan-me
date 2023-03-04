@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${my_ip}:3306/user_center?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+
+user:
+  default:
+    head: https://msb-edu-dev.oss-cn-beijing.aliyuncs.com/default-headimg.png
+  auth:
+    whiteList: /user/login,/user/login/verificationCode,/user/login/loginByPassword,/user/loginByPasswordToB
+
+rocketmq:
+  producer:
+    group: horse-user-service   

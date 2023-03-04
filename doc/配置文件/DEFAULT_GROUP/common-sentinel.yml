@@ -1,0 +1,5 @@
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: ${my_ip}:8858

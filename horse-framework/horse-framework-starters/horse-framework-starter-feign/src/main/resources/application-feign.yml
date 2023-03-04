@@ -1,0 +1,33 @@
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        loggerLevel: basic
+  httpclient:
+    enabled: true
+
+ribbon:
+  #  OkToRetryOnAllOperations: true #对所有操作请求都进行重试,默认false
+  ReadTimeout: 60000   #负载均衡超时时间，默认值5000
+  ConnectTimeout: 60000 #ribbon请求连接的超时时间，默认值2000
+  #  MaxAutoRetries: 0     #对当前实例的重试次数，默认0
+  #  MaxAutoRetriesNextServer: 0 #对切换实例的重试次数，默认1
+  # 如果不添加 ribbon.http.client.enabled=true，那么 ribbon 的默认配置不会生效
+  http:
+    client:
+      enabled: true
+
+hystrix:
+  command:
+    default: #default全局有效，service id指定应用有效
+      execution:
+        timeout:
+          #如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 120000 #断路器超时时间，默认1000ms
+          strategy: SEMAPHORE
+

@@ -1,0 +1,30 @@
+jwt:
+  # 客户端类型: 1 - 后台管理端；2 - 面向用户端
+  clientType: 1
+  # JWT存储的请求头
+  tokenHeader: Authorization
+  refreshTokenHeader: R-Authorization
+  # JWT加解密使用的密钥
+  secret: msb@Login(Auth}*^31)&czxy%
+  # 公钥串
+  publicKeyStr: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDRZLB1PfJWBtrHrZyGCHR6hrZIguxLafZKkYm3Lz3rBl5QgsVI4ObHcXy/hrPq6HoXtksuPbXClnwTYicfMW1ZRAwoZeoqDxVza+Jm98rnhHaCklOp4Ph/3/wIppt7EQCGx7SuDEY9q3j9pM57TFT6WgqtjNghHN08ERP/M5nlOwIDAQAB
+  # 私钥串
+  privateKeyStr: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANFksHU98lYG2setnIYIdHqGtkiC7Etp9kqRibcvPesGXlCCxUjg5sdxfL+Gs+roehe2Sy49tcKWfBNiJx8xbVlEDChl6ioPFXNr4mb3yueEdoKSU6ng+H/f/Aimm3sRAIbHtK4MRj2reP2kzntMVPpaCq2M2CEc3TwRE/8zmeU7AgMBAAECgYBgS5jm4g0fSNm2OH4iGaNPccJEiIkYiWttkY6uwrgL7IrVJb6KrHsVP3iqL81v+2einf/nDRQYn9IBrALn0nhBXnmm/AScZ5fdP3H/2H1pxMwLNmmoY3s6GGWA0BKcSnbFNuW23mDWXQKwD7ekobRnqPsnMAAFKM0NVFcYRVC/UQJBAPnwweeK77PF963Wpjzf75pWlq4rmltkhpby3Ej0fRtBNxpginbRC2Ra6LvnSl2WQmmSdcl6t6RHflOk7KDx6LkCQQDWeEcyNb1iD5fP9SXdIR+y1JrywA/ixvd6se4Mkt3gp/98/XOSIXKuMQXLqSx0DJaUiEl4xwqwMXXNF9nn89uTAkEAoDEi1lhCEaLMf+qXWWTdmLnukWr436KqcIzviwLIPHOr8Yf2tvh8qLFrgSNYkmr/3dI1FBFHKk94M/v8fZsOYQJAWT6NqcgQ+WgxrPh+/AhXj2vG2nKvaZePzb+SpirLJzvhJZq1574BYZjGp5vLArNmSYJ4yEhTG0RJl8FwDIQ9/wJBAIqrIIHfBiZdj9YaT/7oTYETIJczTMHqW4xJwcDSfGPO5qNWD2gZSuV9VP/43Tqi6F2VQw+HNCuu2m2HyuH6/jk=
+  # pc-token的超期限时间(1年) 1440*365*1 单位分钟
+  expiration: 525600
+  # 刷新pc-token超期限时间(3年) 1440*365*3 单位分钟
+  refreshExpiration: 1576800
+  # admin的超期限时间(一年) 1440*365*1 单位分钟
+  adminExpiration: 525600
+  # 刷新admin超期限时间(3年) 1440*365*3 单位分钟
+  adminRefreshExpiration: 1576800
+  # app-token的超期限时间(1年) 1440*365*1 单位分钟
+  appExpiration: 525600
+  # 刷新app-refreshToken超期限时间(3年) 1440*365*3 单位分钟
+  appRefreshExpiration: 1576800
+  # JWT负载中拿到开头
+  tokenHead: 'Bearer '
+  client: false
+  selfDecryptToken: true
+  # token黑名单
+  blackListPrefix: msb:jwt:token:balckList:%s

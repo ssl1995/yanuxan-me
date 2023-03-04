@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: @artifactId@
+
+
+  redis:
+    host: 8.142.25.43
+    password: mashibing
+    port: 6379
+    database: 3
+    timeout: 5000
+    redisson:
+      connectionMinimumIdleSize: 1

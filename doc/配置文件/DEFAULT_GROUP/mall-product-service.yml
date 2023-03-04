@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${my_ip}:3306/mall_product?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+
+product:
+  recommend:
+    - id: 1
+      title: R语言游戏数据分析
+      subtitle: 资深从业者推荐
+      recommend_picture: https://msb-edu-dev.oss-cn-beijing.aliyuncs.com/uc/account-avatar/3.png
+    - id: 2
+      title: 神经机器翻译
+      subtitle: 精选最受欢迎
+      recommend_picture: https://msb-edu-dev.oss-cn-beijing.aliyuncs.com/uc/account-avatar/2.png
+    - id: 3
+      title: C语言编程
+      subtitle: 大咖推荐
+      recommend_picture: https://msb-edu-dev.oss-cn-beijing.aliyuncs.com/uc/account-avatar/3.png

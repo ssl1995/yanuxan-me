@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>horse-framework-demo</artifactId>
+        <groupId>com.msb.cloud</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>horse-demo-transform</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+
+
+        <dependency>
+            <groupId>com.msb.cloud</groupId>
+            <artifactId>horse-framework-starter-web</artifactId>
+            <exclusions>
+
+
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.github.luo-zhan</groupId>
+            <artifactId>transform-spring-boot-starter</artifactId>
+            <version>2.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.luo-zhan</groupId>
+            <artifactId>transform-extension-for-mybatis-plus</artifactId>
+            <version>2.0.0-RELEASE</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

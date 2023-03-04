@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${my_ip}:3306/horse_im?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+rocketmq:
+  producer:
+    group: im-center-group
+im:
+  server:
+    # netty服务注册在nacos上的名称
+    nacosNettyName: horse-im-netty
+    # 客户端连接websocket时携带的key
+    clientParamKey: client
+    # websocket中发送的消息大小限制 512kb 1024*512
+    maxContentLength: 524288
+    webSocketPrefix: /ws
+    # socket 缓冲队列大小
+    soBackLog: 1024
+    # server读空闲时间 超过该时间的channel关闭
+    serverReaderIdleTimeSeconds: 600
+    # client读空闲时间 超过该时间的channel关闭
+    clientReaderIdleTimeSeconds: 600
+    port: 9091
+    bossNthreads: 1
+    wrokerNthreads: 2
+  threadPool:
+    coreSize: 10
+    maxSize: 30
+    keepAliveTime: 300
+    queueSize: 100
+    namePrefix: IM
+store:
+  avatar: https://msb-edu-dev.oss-cn-beijing.aliyuncs.com/uc/account-avatar/1111111.png
+  name: 严选
+  id: 1
+  sysId: 1
+  storeUserHeartExpireSeconds: 1
+  storeWaiterHeartExpireSeconds: 60
+  roleId: 3  
+  
+

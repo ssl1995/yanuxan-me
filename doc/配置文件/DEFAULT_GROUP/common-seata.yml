@@ -1,0 +1,13 @@
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  # 事务组名称，和服务端service.vgroupMapping对应
+  tx-service-group: my_test_tx_group
+  service:
+    grouplist:
+      default: ${my_ip}:8091
+    vgroup-mapping:
+      my_test_tx_group: default
+      
+
+

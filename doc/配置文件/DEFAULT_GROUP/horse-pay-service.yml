@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${my_ip}:3306/pay_center?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+
+# MQ生产者
+rocketmq:
+  producer:
+    group: horse-pay-service
+
+# 支付中台配置
+pay-center:
+  # 预支付微信应用代号
+  prepayWxAppCode: YANXUAN_WX_MP
+  # 预支付支付宝应用代号
+  prepayAliAppCode: YANXUAN_ALI_WEB
+  # 移动收银台支付页面
+  wapCashierUrl: https://收银台域名/pages/wapPay?payOrderNo=
+  # 移动收银台回调页面
+  wapResultUrl: https://收银台域名/pages/wapResult?payOrderNo=
+
+# 支付配置
+wxpay:
+  payNotify: https://公网服务ip/payCenter/notify/wxPayNotify/
+  refundNotify: https://公网服务ip/payCenter/notify/wxRefundNotify/
+
+alipay:
+  payNotify: http://公网服务ip/payCenter/notify/aliPayNotify/
+  refundNotify: http://公网服务ip/payCenter/notify/aliRefundNotify/
+
+# 阿里云OSS配置
+oss:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  accessKey: 阿里云oss key
+  accessKeySecret: 阿里云oss key secret
+  bucket: bucket名称
+  expire: 10000000
+  dir: 文件夹/

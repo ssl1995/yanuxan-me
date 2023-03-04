@@ -1,0 +1,54 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${my_ip}:3306/mall_trade?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+
+# 接口白名单
+user:
+  auth:
+    whiteList:
+      - /app/tradeOrder/subscribeExpress100
+      - /app/refundOrder/subscribeExpress100
+      - /pay/payNotify
+      - /pay/refundNotify
+      - /payCenter/payNotify/**
+      - /payCenter/refundNotify/**
+
+# 物流API   
+logistics-api:
+  enable: express100
+  configs:
+    - id: express100 #快递100
+      key: #快递100key
+      customer: #快递100customer
+      secret: #快递100secret
+      userid: #快递100userid
+      orderPollUrl: http://公网服务ip/mall/trade/app/tradeOrder/subscribeExpress100
+      refundPollUrl: http://公网服务ip/mall/trade/app/refundOrder/subscribeExpress100
+
+# 支付中台
+# 支付中台
+pay-center:
+  payNotifyUrl: https://公网服务ip/mall/trade/payCenter/payNotify
+  refundNotifyUrl: https://公网服务ip/mall/trade/payCenter/refundNotify
+  payApps:
+    - appCode: YANXUAN_WX_MP
+      signKey: YANXUAN_WX_MP_KEY
+      payCodes:
+        - WX_NATIVE
+        - WX_H5
+        - WX_JSAPI
+    - appCode: YANXUAN_WX_APP
+      signKey: YANXUAN_WX_APP_KEY
+      payCodes:
+        - WX_APP
+    - appCode: YANXUAN_ALI_WEB
+      signKey: YANXUAN_ALI_WEB_KEY
+      payCodes:
+        - ALI_WAP
+        - ALI_PC
+        - ALI_QR
+    - appCode: YANXUAN_ALI_APP
+      signKey: YANXUAN_ALI_APP_KEY
+      payCodes:
+        - ALI_APP

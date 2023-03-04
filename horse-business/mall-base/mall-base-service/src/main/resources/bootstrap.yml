@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: @artifactId@
+
+server:
+  port: 4003
+  servlet:
+    context-path: /mall/base
+
+dubbo:
+  cloud:
+    subscribed-services: 'horse-user-service'

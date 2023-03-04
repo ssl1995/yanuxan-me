@@ -1,0 +1,4 @@
+rocketmq:
+  name-server: ${my_ip}:9876
+  producer:
+    send-message-timeout: 30000

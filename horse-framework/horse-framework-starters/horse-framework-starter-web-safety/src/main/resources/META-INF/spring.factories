@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.msb.framework.web.safety.SignAutoConfig,\
+  com.msb.framework.web.safety.UnrepeatableAutoConfig
+

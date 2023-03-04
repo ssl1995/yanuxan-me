@@ -1,0 +1,12 @@
+server:
+  port: 5004
+  servlet:
+    context-path: /oss
+
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        register-enabled: false

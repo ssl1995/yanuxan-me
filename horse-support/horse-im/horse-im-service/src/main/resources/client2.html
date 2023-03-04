@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket客户端</title>
+    <script src="protoReq.js" type="text/javascript"></script>
+    <script src="protoRsp.js" type="text/javascript"></script>
+</head>
+<body>
+<script>
+    var ticket = 'pLnzSnEhMut+i0DvlDeBXvWMCzDL7Euy7cxsZ+gn127Ee70Ro1fbi8Dzc08Xa9SL';
+    var socket;
+    if (window.WebSocket) {
+        socket = new WebSocket("wss://k8s-horse-gateway.mashibing.cn/ws?client=yan_xuan&ticket=" + urlencode(ticket) + "&connect=1&user=2&nickname=%E7%BD%97%E4%BC%AF%E7%89%B9&avatar=https%3A%2F%2Fmsb-edu-dev.oss-cn-beijing.aliyuncs.com%2Fuc%2Faccount-avatar%2F6B12CFC0-C44A-4144-8769-77CA8483B42B.jpeg");
+
+        socket.binaryType = "arraybuffer";
+
+        socket.onmessage = function (event) {
+
+            var ta = document.getElementById('responseText');
+            var uint8Array = new Uint8Array(event.data);
+            var msg1 = proto.RspModel.deserializeBinary(uint8Array);
+            var content = msg1.getContent();
+            var traceid = msg1.getTraceid();
+            var tracetype = msg1.getTracetype();
+            var code = msg1.getCode();
+            var message = msg1.getMessage();
+            // if (tracetype !== 0) {
+                ta.value = ta.value + "\n\ntraceid=" + traceid + "\ntracetype=" + tracetype + "\ncontent=" + content + "\ncode=" + code + "\nmessage=" + message;
+            // }
+        }
+
+        socket.onopen = function (event) {
+            var ta = document.getElementById('responseText');
+
+            ta.value = "连接开启!";
+            setInterval(() => {
+                send(guid(), 0, "{\"text\": \"ping\"}")
+            }, 3000);
+        }
+
+
+        socket.onclose = function (event) {
+            var ta = document.getElementById("responseText");
+            ta.value = ta.value + "\n" + "连接断开";
+        }
+    } else {
+        alert("浏览器不支持WebSocket");
+    }
+
+    function send(traceId, traceType, content) {
+        if (!window.WebSocket) {
+            return;
+        }
+        if (socket.readyState == WebSocket.OPEN || true) {
+            var messageModel = new proto.ReqModel();
+
+            messageModel.setTraceid(traceId);
+            messageModel.setTracetype(traceType);
+            messageModel.setContent(content);
+            var serializeBinary = messageModel.serializeBinary();
+            socket.send(serializeBinary);
+        } else {
+            alert("连接尚未开启");
+        }
+    }
+
+    send(guid(), 9, content)
+    }
+
+    function sendMsg(msg) {
+        '{"traceId":"uuid","traceType":"3","content":{"payload":{"text ":"文本消息"},"toSessionId":1,"type":1}'
+        var content = '{"payload":{"text ":"文本消息"},"toSessionId":"1","type":1}'
+        send(guid(), 3, content)
+    }
+
+    function urlencode(str) {
+        str = (str + '').toString();
+
+        return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
+    }
+
+    function guid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+</script>
+<form onsubmit="return false">
+    <textarea name="messageDTO" style="width:400px;height:200px"></textarea>
+
+    <input onclick="sendMsg(this.form.messageDTO.value)" type="button" value="发送数据">
+
+    <h3>服务端输出：</h3>
+
+    <textarea id="responseText" style="width:400px; height:300px"></textarea>
+
+    <input onclick="document.getElementById('responseText').value=''" type="button" value="清空内容">
+</form>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msb.im.mapper.MessageMapper">
+    <select id="findDbBySessionIdAndMessageIndexIds" resultType="com.msb.im.model.entity.Message">
+        SELECT
+        *
+        FROM
+        message
+        WHERE
+        is_deleted = 0
+        AND session_id = #{sessionId}
+        AND message_index IN
+        <foreach collection="messageIndexIds" item="messageIndexId" open="(" separator="," close=")">
+            #{messageIndexId}
+        </foreach>
+    </select>
+
+    <select id="groupHoursByDaysMessage" resultType="com.msb.im.model.vo.CountHoursMessageVO">
+        SELECT HOUR
+                   ( FROM_UNIXTIME( m.create_time_stamp / 1000, '%Y-%m-%d %H:%i:%s' ) ) hours,
+               count( m.id ) messageCount
+        FROM
+            message m inner join `session` s on s.id = m.session_id and s.sys_id = #{systemId}
+        WHERE
+                DATE( FROM_UNIXTIME( m.create_time_stamp / 1000, '%Y-%m-%d' ) ) = #{days}
+        GROUP BY
+            HOUR ( FROM_UNIXTIME( m.create_time_stamp / 1000, '%Y-%m-%d %H:%i:%s' ) )
+    </select>
+
+    <select id="groupDaysMessage" resultType="com.msb.im.model.vo.CountDaysMessageVO">
+        SELECT
+        ( FROM_UNIXTIME( m.create_time_stamp / 1000, '%Y-%m-%d' ) ) days,
+        count( m.id ) messageCount
+        FROM
+        message m
+        INNER JOIN `session` s ON s.id = m.session_id
+        AND s.sys_id = #{systemId}
+        WHERE
+        m.create_time_stamp >= #{start}
+        AND m.create_time_stamp &lt;= #{end}
+        GROUP BY
+        ( FROM_UNIXTIME( m.create_time_stamp / 1000, '%Y-%m-%d' ) )
+    </select>
+</mapper>

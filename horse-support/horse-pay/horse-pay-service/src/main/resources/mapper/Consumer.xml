@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msb.pay.mapper.RefundOrderMapper">
+
+    <select id="refundOrderPage" resultType="com.msb.pay.model.entity.RefundOrder">
+        SELECT t1.*
+        FROM refund_order t1
+        LEFT JOIN pay_order t2 on t1.pay_order_id = t2.id
+        <where>
+            <if test="dto.mchPrimaryId != null">
+                t1.mch_primary_id = #{dto.mchPrimaryId}
+            </if>
+            <if test="dto.appPrimaryId != null">
+                and t1.app_primary_id = #{dto.appPrimaryId}
+            </if>
+            <if test="dto.payOrderNo != null and dto.payOrderNo != ''">
+                and t2.pay_order_no like concat('%', #{dto.payOrderNo}, '%')
+            </if>
+            <if test="dto.refundOrderNo != null and dto.refundOrderNo != ''">
+                and t1.refund_order_no like concat('%', #{dto.refundOrderNo}, '%')
+            </if>
+            <if test="dto.refundStatus != null">
+                and t1.refund_status = #{dto.refundStatus}
+            </if>
+            <if test="dto.notifyStatus != null">
+                and t1.notify_status = #{dto.notifyStatus}
+            </if>
+            <if test="dto.startTime != null">
+                and <![CDATA[ #{dto.startTime} <= t1.create_time]]>
+            </if>
+            <if test="dto.endTime != null">
+                and <![CDATA[ #{dto.endTime} >= t1.create_time]]>
+            </if>
+        </where>
+        ORDER BY t1.id DESC
+    </select>
+
+</mapper>

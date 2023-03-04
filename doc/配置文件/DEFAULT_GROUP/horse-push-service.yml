@@ -1,0 +1,13 @@
+sms:
+  regionId: cn-shanghai
+  accessKeyId: 阿里云key
+  secret: 阿里云秘钥
+  signName: 签名
+  domain: dysmsapi.aliyuncs.com
+  action: SendSms
+  batchAction: SendBatchSms
+  templateMap:
+    'login':
+      templateCode: 模板id
+      paramNameList:
+        - code模板参数

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>horse</artifactId>
+        <groupId>com.msb.cloud</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>horse-support</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>horse-gateway</module>
+        <module>horse-user</module>
+        <module>horse-oss</module>
+        <module>horse-im</module>
+        <module>horse-third</module>
+        <module>horse-push</module>
+        <module>horse-id</module>
+        <module>horse-pay</module>
+        <module>horse-search</module>
+        <module>horse-sensitive</module>
+        <module>horse-like</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.msb.cloud</groupId>
+                <artifactId>horse-framework-dependencies</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

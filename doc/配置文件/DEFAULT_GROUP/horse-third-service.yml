@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${my_ip}:3306/user_third?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+
+# 接口白名单
+user:
+  auth:
+    whiteList:
+      - /wx/mp/auth/**
+      - /wx/mp/getOpenId/**
+      - /wx/mp/getAuthorizationUrl/**
+
+# 微信公众号  模板消息
+wx:
+  mp:
+    configs:
+      - appCode: yanxuan
+        appId: 微信appid
+        secret: 秘钥
+        token: msb
+        aesKey: aeskey
+        templateMap:
+          'orderCancel':
+            templateId: rwbyt623ABDzwS1hP1Zgcf-fZq-_Int-5Ad-sRhUoqQ
+            url: https://k8s-shop-app.mashibing.cn/orderDetail?id=
+            first: 您的订单已取消，点击查看详情
+            remark: 您的订单被取消，已支付金额将会在1-3个工作日内原路返回
+          'orderPay':
+            templateId: WC2amd6M5NYyUU-8Q2GzG447UU_pp7kJnG5DbhPoNJI
+            url: https://k8s-shop-app.mashibing.cn/orderDetail?id=
+            first: 您的订单已经支付成功，点击查看详情
+            remark: 您的订单已经支付成功，我们将为尽快为您发货，感谢您的使用
+          'orderDelivery':
+            templateId: KoCuhv5eKBE2CMfXWqaWnhSW2aSYh5ZnK4ClN9jkS4E
+            url: https://k8s-shop-app.mashibing.cn/logisitcsInfo?orderId=
+            first: 您的订单已经发货，关注实时物流
+            remark: 您购买的宝贝正快马加鞭向您飞奔而去，请留意物流实时动态
+          'returnLogistics':
+            templateId: pFS_OdNs_BLG9vKrwC7pIridog51tK5H189O1_N6u8s
+            url: https://k8s-shop-app.mashibing.cn/saleAfterDetail?id=
+            first: 商家已经同意您的退货申请
+            remark: 请及时通过马士兵严选商城，填写退货物流信息，超时未填写将会自动关闭退款
+          'refundFail':
+            templateId: mFOGH3JqgQaU23B19QcoCeQ-PZz0kf-Uu-lQ0GKUbP0
+            url: https://k8s-shop-app.mashibing.cn/saleAfterDetail?id=
+            first: 您的售后订单退款失败
+            remark: 点击查看售后单详情，如有疑问请联系客服人员
+          'refundSuccess':
+            templateId: 9-wTXxUgU8NH3U9tqQP9yxFBKv-b_gqRxuxMFvQU1TU
+            url: https://k8s-shop-app.mashibing.cn/saleAfterDetail?id=
+            first: 您的售后订单退款成功
+            remark: 您的订单已完成退款，金额已原路返回付款账户，请注意查收

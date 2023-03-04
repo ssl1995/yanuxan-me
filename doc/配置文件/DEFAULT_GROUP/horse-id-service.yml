@@ -1,0 +1,4 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${my_ip}:3306/horse_id?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8

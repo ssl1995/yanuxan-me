@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        service: ${spring.application.name}
+        server-addr: 39.103.236.147:8848
+      config:
+        name: @artifactId@
+        file-extension: yml
+        server-addr: 39.103.236.147:8848
+        namespace: ${spring.profiles.active}
+        shared-configs: db-config.yml,dubbo-config.yml

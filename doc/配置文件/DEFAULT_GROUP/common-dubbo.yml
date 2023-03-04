@@ -1,0 +1,21 @@
+dubbo:
+  scan:
+    base-packages: com.msb.**.dubbo
+  application:
+    qos-enable: false
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://${my_ip}:8848?namespace=dev
+  consumer:
+    check: false
+    timeout: 10000
+  metadata-report:
+    address: ${dubbo.registry.address}
+    timeout: 10000
+  config-center:
+    id: ${spring.application.name}
+    address: ${dubbo.registry.address}
+    
+ 

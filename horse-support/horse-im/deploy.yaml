@@ -1,0 +1,119 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: $IMAGES
+  name: $IMAGES
+  namespace: yanxuan
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  selector:
+    matchLabels:
+      app: $IMAGES
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        app: $IMAGES
+    spec:
+      imagePullSecrets:
+        - name: aliyun-docker-hub
+      containers:
+        - image: 'elastic/filebeat:7.17.3' 
+          args: [
+            "-c","/etc/filebeat.yml",
+            "-e",
+          ]  
+          name: filebeat
+          resources:
+            limits:
+              cpu: '500'
+              memory: 500Mi
+            requests:
+              cpu: '0.1'
+              memory: 100Mi 
+          volumeMounts: 
+            - name: $IMAGES
+              mountPath: /data/logs  
+            - name: filebeat-config  
+              mountPath: /etc/filebeat.yml     
+              subPath: filebeat.yml  
+        - image: '$REGISTRY/$DOCKERHUB_NAMESPACE/$IMAGES:$BUILD_NUMBER' 
+          name: $IMAGES
+          ports:
+            - containerPort: $JAR_PORD
+              protocol: TCP
+          resources:    
+            limits:
+              cpu: '2.5'
+              memory: 2500Mi
+            requests: 
+              cpu: '0.1'
+              memory: 256Mi
+          volumeMounts: 
+            - name: $IMAGES
+              mountPath: /data/logs 
+      volumes:
+        - name: $IMAGES
+          emptyDir: {}
+        - name: filebeat-config
+          configMap:
+            name: filebeat-config        
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: ConfigMap          
+metadata:
+  namespace: yanxuan
+  name: filebeat-config
+data:
+  filebeat.yml: |- 
+    filebeat.inputs:
+    - type: log
+      paths:
+        - /data/logs/console.log
+      fields:
+        type: "$IMAGES"
+      multiline:
+        pattern: '^\['
+        negate: true
+        match: after
+
+    setup.ilm.enabled: false
+    setup.template.name: "log"
+    setup.template.pattern: "log-*"
+
+    output.elasticsearch:
+      hosts: ["$ES:9200"]
+      indices:
+        - index: "$IMAGES-%{+yyyy.MM.dd}"
+          when.equals:
+            fields.type: "$IMAGES"
+    setup.kibana:
+      host: "$ES:5601"
+    processors:
+      - script:
+          lang: javascript
+          id: my_filter
+          tag: enable
+          source: >
+            function process(event) {
+                var message= event.Get("message");
+                var time =message.split("|")[0];
+                event.Put("log_time",time);
+                message= message.replace(time, '')
+                event.Put("message", message);      
+            }
+      - timestamp:
+          field: log_time
+          timezone: Asia/Shanghai
+          layouts:
+            - '2006-01-02 15:04:05'
+            - '2006-01-02 15:04:05.999'
+          test:
+            - '2019-06-22 16:33:51'

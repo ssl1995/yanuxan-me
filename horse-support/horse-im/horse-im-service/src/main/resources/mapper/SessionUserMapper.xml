@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msb.im.mapper.SessionUserMapper">
+    <update id="updateByCondition">
+        update session_user
+        <set>
+            <if test="sessionUser.updateTimeStamp != null">
+                update_time_stamp = #{sessionUser.updateTimeStamp},
+            </if>
+            <if test="sessionUser.updateUser != null">
+                update_user = #{sessionUser.updateUser},
+            </if>
+            <if test="isAddUnread == true">
+                un_read_count = un_read_count + 1,
+            </if>
+            <choose>
+                <when test="sessionUser.isDeleted == false">
+                    is_deleted = 0,
+                </when>
+                <otherwise>
+                    is_deleted = 1,
+                </otherwise>
+            </choose>
+        </set>
+        <where>
+            <if test="condition.id != null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.sessionId != null">
+                AND session_id = #{condition.sessionId}
+            </if>
+            <if test="condition.userId != null">
+                AND user_id = #{condition.userId}
+            </if>
+            <if test="condition.isDeleted != null">
+                AND is_deleted = #{condition.isDeleted}
+            </if>
+            <if test="condition.updateTimeStamp != null">
+                AND update_time_stamp = #{condition.updateTimeStamp}
+            </if>
+            <if test="condition.createUser != null">
+                AND create_user = #{condition.createUser}
+            </if>
+            <if test="condition.updateUser != null">
+                AND update_user = #{condition.updateUser}
+            </if>
+        </where>
+    </update>
+
+
+    <select id="findBySysIdAndUserId" resultType="com.msb.im.model.entity.SessionUser">
+        select su.* from session s inner join session_user su on s.id = su.session_id
+        and s.sys_id = #{sysId} and su.user_id = #{userId}
+        and s.type
+        and s.is_deleted = 0
+    </select>
+</mapper>
