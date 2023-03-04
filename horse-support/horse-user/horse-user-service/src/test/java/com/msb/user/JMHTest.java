@@ -37,7 +37,7 @@ public class JMHTest {
     public void setUp() {
         springContext = SpringApplication.run(UserApplication.class);
         IdGenerator idGenerator = springContext.getBean(IdGenerator.class);
-        businessCosIdSegmentChain = idGenerator.getBusinessCosIdSegmentChain("test");
+        businessCosIdSegmentChain = idGenerator.getBusinessCosIdSegmentChain("order1");
     }
 
     @TearDown

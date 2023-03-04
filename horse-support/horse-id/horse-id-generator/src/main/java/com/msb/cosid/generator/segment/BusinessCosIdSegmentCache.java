@@ -55,7 +55,7 @@ public class BusinessCosIdSegmentCache {
     }
 
     /**
-     * 生成号段链
+     * 生成BusinessCosIdSegmentChain号段链
      */
     public BusinessCosIdSegmentChain.BusinessCosIdGenerator generatorSegmentChain(BusinessCosIdSegmentChain businessCosIdSegmentChain) {
 
@@ -67,16 +67,22 @@ public class BusinessCosIdSegmentCache {
 
         long prefetchingCount;
 
+        // 上一个号段使用的时间
         long wakeupTimeGap = Optional.ofNullable(putSegmentChainTime)
                 .map(localDateTime -> Duration.between(putSegmentChainTime, hungerTime).toMillis() / 1000)
                 .orElse((long) HUNGER_THRESHOLD);
 
-
+        // 上一个号段使用时间 < 30s = 饥饿了 = 用的太快了
         if (wakeupTimeGap < HUNGER_THRESHOLD) {
             log.info("饥饿了");
+            // 下一个号段需要生成的数量 =  上一个号段生成的数量 * (饥饿阈值/上一个号段时间时间)
+            // 多余的时间 = 号段使用时间的阈值 - 上一个号段使用的时间
+            // 比如：30s - 10s = 还剩20s是多余的 30/10=2,下一个号段翻两倍
             prefetchingCount = Math.min(Math.multiplyExact(businessCosIdSegmentChain.getLastPrefetchingCount(), Math.max(Math.floorDiv(HUNGER_THRESHOLD, Math.max(wakeupTimeGap, 1)), 2)), MAX_PREFETCH_DISTANCE);
         } else {
+            // 上一个号段使用时间 >= 30s  = 用的慢 = 完全够用
             log.info("不饿");
+            // 下一个号段需要生成的数量 =  上一个号段生成的数量 / 2
             prefetchingCount = Math.max(Math.floorDiv(businessCosIdSegmentChain.getLastPrefetchingCount(), 2), businessCosIdSegmentChain.getSafeDistance());
         }
 

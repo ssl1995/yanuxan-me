@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
- * @author liao
+ * 号段的链表的数据结构
  */
 @Slf4j
 @Setter
@@ -31,6 +31,9 @@ public class BusinessCosIdSegmentChain extends LinkedList<BusinessCosIdSegmentCh
      */
     private volatile long safeDistance;
 
+    /**
+     * 上一个号段阈值的/2 =  触发下一次扩容的时机
+     */
     private volatile long safeDistanceMappingId = 0;
 
 
@@ -76,9 +79,13 @@ public class BusinessCosIdSegmentChain extends LinkedList<BusinessCosIdSegmentCh
         this.lastPrefetchingCount = lastPrefetchingCount;
         this.additionalSegment = additionalSegment;
         this.availableCount = new AtomicLong(0);
+        // 初始化一个号段
         doAdditionalSegment(1);
     }
 
+    /**
+     * 号段的Dao数据结构
+     */
     @Getter
     @Setter
     public static class BusinessCosIdGenerator {
@@ -126,13 +133,16 @@ public class BusinessCosIdSegmentChain extends LinkedList<BusinessCosIdSegmentCh
 
 
     /**
-     * 只需要单线程触发一次，下一个线程将不会进来
-     * <p>
-     * 还可能会有一个问题， 当一个线程获取下一个号段为空的时候，
+     * 增加号段：
+     * 优点：根据速度来确认扩容的速度
+     * 设计：
+     * 1.只需要单线程触发一次，下一个线程将不会进来
+     * 2.双重验证：还可能会有一个问题， 当一个线程获取下一个号段为空的时候，
      * 这个时候 上一个线程释放了锁了，这个时候进来是多余的，锁内应该再判断一次 是否需要追加号段
      * 所以应该要双重验证
      */
     private void doAdditionalSegment(long id) {
+        // 1.防止极端情况，一个线程取到了当前号段的最后一个，另一个线程还在生成下一个号段
         if (id == lastId) {
             synchronized (lock) {
                 while (id == lastId && doAdditionalSegmentIsRunning) {
@@ -147,11 +157,14 @@ public class BusinessCosIdSegmentChain extends LinkedList<BusinessCosIdSegmentCh
             }
         }
 
-        //没有在运行获取号段的线程  并且已经触发获取id的阈值
+        // 2.没有在运行获取号段的线程  并且已经触发获取id的阈值
         if ((!doAdditionalSegmentIsRunning && id >= safeDistanceMappingId)) {
             boolean tryLock = reentrantLock.tryLock();
             //上锁并且二次校验
             try {
+                // 双重验证原因：还可能会有一个问题， 当一个线程获取下一个号段为空的时候，
+                // 这个时候 上一个线程释放了锁了，这个时候进来是多余的，锁内应该再判断一次 是否需要追加号段
+                // 所以应该要双重验证
                 if (tryLock && !doAdditionalSegmentIsRunning && id >= safeDistanceMappingId) {
                     //双层校验
                     hungerTime = LocalDateTime.now();
