@@ -17,6 +17,9 @@ import static com.msb.framework.redis.consts.Time.DAY;
 import static com.msb.framework.redis.consts.Time.FOREVER;
 
 
+/**
+ * 接口层面缓存
+ */
 @RestController
 @RequestMapping("/cache")
 @Slf4j
