@@ -127,7 +127,7 @@ public class SignKit {
      * 校验签名
      *
      * @param signObject：签名对象
-     * @param key：签名秘钥
+     * @param key：签名秘钥 可以是运营后台设置的一个字符串
      * @return boolean
      * @author peng.xy
      * @date 2022/6/9

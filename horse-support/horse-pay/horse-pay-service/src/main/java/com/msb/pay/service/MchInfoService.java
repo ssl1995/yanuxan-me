@@ -211,7 +211,7 @@ public class MchInfoService extends ServiceImpl<MchInfoMapper, MchInfo> {
         IPaymentService paymentService = ChannelContext.getIPaymentService(mchInfo.getMchCode());
         boolean flag = paymentService.saveMchInfoData(mchInfo, updateMchInfoDTO);
         boolean update = super.updateById(mchInfo);
-        // 发送商户证书同步
+        // 发送商户证书同步 = 证书同步，发送消息通知
         if (flag) {
             notifyService.sendMchCertSyncNotify(mchInfo.getId());
         }

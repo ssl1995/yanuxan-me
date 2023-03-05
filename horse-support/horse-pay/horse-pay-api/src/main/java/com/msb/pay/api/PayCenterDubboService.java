@@ -7,7 +7,7 @@ import com.msb.pay.model.vo.PrepaymentVO;
 import com.msb.pay.model.vo.UnifiedOrderVO;
 
 /**
- * 支付中台Dubbo接口
+ * 对内使用：支付中台Dubbo接口
  *
  * @author peng.xy
  * @date 2022/6/8
