@@ -54,6 +54,7 @@ public class WsServerMessageHandler extends SimpleChannelInboundHandler<WebSocke
         if (webSocketFrame instanceof PingWebSocketFrame) {
             pingWebSocketFrameHandler(ctx, (PingWebSocketFrame) webSocketFrame);
         } else if (webSocketFrame instanceof TextWebSocketFrame) {
+            // 文本都转成了BinaryWebSocketFrame类型，这里就为空
         } else if (webSocketFrame instanceof CloseWebSocketFrame) {
             closeWebSocketFrameHandler(ctx, (CloseWebSocketFrame) webSocketFrame);
         } else if (webSocketFrame instanceof BinaryWebSocketFrame) {
@@ -63,6 +64,7 @@ public class WsServerMessageHandler extends SimpleChannelInboundHandler<WebSocke
 
     private void binaryWebSocketFrameHandler(ChannelHandlerContext ctx, BinaryWebSocketFrame webSocketFrame) {
         // protobuf 处理
+        // protobuf通过提前保存属性位置，做一个数组 [1234,10.1,230,23,12]第一个元素1234为属性坐标，前后端都会存一份
         ByteBuf content = webSocketFrame.content();
         byte[] bytes = new byte[content.readableBytes()];
         content.readBytes(bytes);
